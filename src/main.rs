@@ -1,27 +1,25 @@
+extern crate clap;
 extern crate xml;
 
 use std::fs::File;
 use std::io::BufReader;
 
-use clap::Parser;
+use clap::{App, Arg};
 use xml::reader::{EventReader, XmlEvent};
 
-#[derive(Parser, Debug, PartialEq)]
-#[clap(author, version, about, long_about = None)]
-#[clap(about = "A XML syntax checker and pretty printer.")]
-struct Args {
-    #[clap(help = "XML files to syntax check")]
-    xml_file: String,
-}
-
-fn indent(size: usize) -> String {
-    const INDENT: &'static str = "    ";
-    (0..size).map(|_| INDENT)
-             .fold(String::with_capacity(size*INDENT.len()), |r, s| r + s)
-}
-
 fn main() {
-    let file = File::open("file.xml").unwrap();
+    let matches = App::new("xmllint")
+        .version("1.0.0")
+        .author("Philipp Speck <philipp@typo.media>")
+        .about("A clone of xmllint, written in Rust")
+        .arg(Arg::new("file")
+            .required(true)
+            .help("XML file to parse")
+        )
+        .get_matches();
+
+    let path = matches.value_of("file").unwrap();
+    let file = File::open(path).unwrap();
     let file = BufReader::new(file);
     let parser = EventReader::new(file);
     let mut depth = 0;
@@ -43,4 +41,10 @@ fn main() {
             _ => {}
         }
     }
+}
+
+fn indent(size: usize) -> String {
+    const INDENT: &'static str = "    ";
+    (0..size).map(|_| INDENT)
+        .fold(String::with_capacity(size*INDENT.len()), |r, s| r + s)
 }

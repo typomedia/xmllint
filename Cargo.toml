@@ -2,8 +2,7 @@
 name = "xmllint"
 version = "1.0.0"
 authors = ["Philipp Speck <philipp@typo.media>"]
-edition = "2021"
 
 [dependencies]
-clap = { version = "4.1", features = ["derive"] }
+clap = "3.2.0"
 xml-rs = "0.8.4"
