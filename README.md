@@ -14,6 +14,6 @@ It is written in Rust, and uses the [xml](https://crates.io/crates/xml) library.
     -h, --help       Print help information
     -V, --version    Print version information
 
-## Building 
+## Build
 
     make build
